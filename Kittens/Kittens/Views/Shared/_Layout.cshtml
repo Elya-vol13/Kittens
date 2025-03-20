@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Kittens</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <style>
+        main.pb-3 {
+            padding-bottom: 0 !important; 
+        }
+
+        /* Стили для хедера */
+        .header {
+            width: 100%;
+            max-width: 1920px;
+            height: auto; 
+            background: white;
+            display: flex;
+            flex-wrap: wrap; 
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 5%;
+            margin-bottom: auto;
+            position: fixed;
+            z-index: 10;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: clamp(60px, 5vw, 80px);
+            height: clamp(60px, 5vw, 80px);
+            margin: 0 auto;
+            font-weight: bold;
+            display: flex; /* Делаем логотип flex-контейнером */
+            align-items: center;
+        }
+        
+        .header-title {
+            color: black;
+            font-size: clamp(24px, 5vw, 40px); 
+            font-family: 'Shantell Sans', sans-serif;
+            font-weight: 700;
+            word-wrap: break-word;
+            margin: 0 auto;
+            flex-grow: 1; /* Занимает всё доступное пространство */
+            text-align: center; /* Выравниваем текст по центру */
+            display: flex; /* Делаем заголовок flex-контейнером */
+            align-items: center;
+        }
+
+        .menu-icon {
+            display: none;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            background: rgba(235, 235, 235, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+        }
+
+        .nav-item-text {
+            color: black;
+            font-size: clamp(16px, 3vw, 32px); 
+            font-family: 'Anonymous Pro', serif;
+            font-weight: 400;
+            word-wrap: break-word;
+        }
+                
+        .nav-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Стили для футера */
+        .footer-section {
+            width: 100%;
+            height: auto;
+            background: linear-gradient(180deg, #A46261 0%, #3E2524 100%);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) inset;
+            padding: 40px 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-brand,
+        .footer-links,
+        .footer-contacts,
+        .footer-social {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-title {
+            font-size: 36px;
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .footer-copyright {
+            font-size: 24px;
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 700;
+            color: #CC9897;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-link {
+            font-size: 24px;
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 700;
+            color: #CC9897;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer-contacts p {
+            font-size: 32px;
+            font-family: 'Anonymous Pro', monospace;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            margin: 0 auto;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Адаптация для мобильных устройств */
+        @@media (max-width: 768px) {
+            /* Стили для хедера */            
+            .header {
+                flex-direction: column;
+                height: auto;
+                left: 0;
+                transform: translateX(0);
+            }
+
+            .header-title {
+                font-size: clamp(12px, 5vw, 24px);
+            }
+            
+            .logo {
+                width: clamp(20px, 5vw, 50px);
+                height: clamp(20px, 5vw, 50px);
+            }
+
+            .menu-icon {
+                width: clamp(12px, 5vw, 24px);
+                height: clamp(12px, 5vw, 24px);
+                display: flex; /* Делаем логотип flex-контейнером */
+                align-items: center;
+            }
+
+            .nav {
+                display: none;
+                flex-direction: column;
+                gap: 5px; 
+                align-items: center;
+            }
+
+            .nav-item {
+                width: 100%;
+                padding: 6px 12px; 
+            }
+
+            .nav-item-text {
+                font-size: 18px; 
+            }
+
+            .nav[data-active="true"] {
+                display: flex;
+                max-height: 200px;
+            }
+            
+            /* Стили для футера */
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-title {
+                font-size: 28px;
+            }
+
+            .footer-copyright,
+            .footer-link,
+            .footer-contacts p {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="~/images/cat.svg" alt="Иконка" class="icon"/>
+            </div>
+            <h1 class="header-title">ЗОЛОТЫЕ БУЛОЧКИ</h1>
+            <div class="menu-icon" id="menu-icon">
+                <img src="~/images/menu.svg" alt="Иконка" class="icon"/>
+            </div>
+        </div>
+
+        <div class="nav" id="nav">
+            <div class="nav-item">
+                <a href="#kittens-section" class="nav-item-text">наши котята</a>
+            </div>
+            <div class="nav-item">
+                <a href="#advantages-section" class="nav-item-text">преимущества</a>
+            </div>
+            <div class="nav-item">
+                <a href="#reviews-section" class="nav-item-text">отзывы</a>
+            </div>
+            <div class="nav-item">
+                <a href="#contact-section" class="nav-item-text">контакты</a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container" style="margin: 0; padding: 0; max-width: 100%;">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="footer-section">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-title">Золотые булочки</h2>
+            <p class="footer-copyright">© 2025 Золотые булочки</p>
+        </div>
+        <div class="footer-links">
+            <a href="#kittens-section" class="footer-link">Наши котята</a>
+            <a href="#advantages-section" class="footer-link">Преимущества</a>
+            <a href="#reviews-section" class="footer-link">Отзывы</a>
+            <a href="#contact-section" class="footer-link">Контакты</a>
+        </div>
+        <div class="footer-contacts">
+            <p class="footer-phone">+7 459 999-99-88</p>
+            <p class="footer-email">zolotocats@mail.ru</p>
+        </div>
+        <div class="footer-social">
+            <a class="social-icon"><img src="~/images/telegram.svg" alt="Telegram" /></a>
+            <a class="social-icon"><img src="~/images/vk.svg" alt="VK" /></a>
+            <a class="social-icon"><img src="~/images/whatsapp.svg" alt="WhatsApp" /></a>
+            <a class="social-icon"><img src="~/images/tiktok.svg" alt="TikTok" /></a>
+        </div>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+    // Функция для плавной прокрутки
+    function smoothScrollTo(targetId) {
+        const targetElement = document.querySelector(targetId);
+
+        if (targetElement) {
+            const header = document.querySelector('.header');
+            const isHeaderFixed = window.getComputedStyle(header).position === 'fixed';
+            const headerHeight = isHeaderFixed ? header.offsetHeight : 0;
+
+            const targetPosition = targetElement.offsetTop - headerHeight;
+
+            // Плавная прокрутка до целевого блока
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Обработчики для ссылок в навигации
+    document.querySelectorAll('.nav-item a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            smoothScrollTo(this.getAttribute('href'));
+        });
+    });
+
+    // Обработчики для ссылок в футере
+    document.querySelectorAll('.footer-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            smoothScrollTo(this.getAttribute('href'));
+        });
+    });
+
+    document.getElementById('menu-icon').addEventListener('click', function () {
+        const nav = document.getElementById('nav');
+        const isActive = nav.getAttribute('data-active') === 'true';
+        nav.setAttribute('data-active', !isActive);
+    });
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
